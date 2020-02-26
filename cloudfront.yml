@@ -1,0 +1,44 @@
+Parameters:
+  RealDomainName: 
+    Type: String
+    Description: real world domain name with TLD
+    MinLength: 0
+  S3DomainName: 
+    Type: String
+    Description: S3 website name
+    MinLength: 0
+Resources:
+  CloudfrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties: 
+      DistributionConfig:
+        Aliases: 
+          - !Ref RealDomainName
+          - Fn::Join:
+            - ""
+            - - "www."
+              - !Ref RealDomainName
+        CacheBehaviors: 
+          - 
+            AllowedMethods: 
+              - GET
+            DefaultTTL: 0
+            MaxTTL: 0
+            MinTTL: 0
+            PathPattern: *
+        Comment: automated website bois!
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: true
+        Origins: 
+          - 
+            DomainName: !Ref S3DomainName
+            Id: !Ref DomainName
+        PriceClass: String
+        Restrictions: 
+          Restrictions
+        ViewerCertificate: 
+          ViewerCertificate
+        WebACLId: String
+

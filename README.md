@@ -1,0 +1,1 @@
+You still have to manually register your domain name with AWS.

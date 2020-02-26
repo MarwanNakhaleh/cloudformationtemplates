@@ -1,0 +1,45 @@
+Parameters:
+  NameOfBucket: 
+    Type: String
+    Description: name of the S3 bucket 
+    MinLength: 0
+  ProjectName: 
+    Type: String
+    Description: name of the S3 bucket 
+    Default: MyProject
+Resources:
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref NameOfBucket
+      Tags:
+        -
+          Key: ProjectName
+          Value: !Ref ProjectName
+      WebsiteConfiguration:
+        IndexDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: false
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: false
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: 
+        Ref: WebsiteBucket
+      PolicyDocument: 
+        Statement: 
+          - 
+            Action: 
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: 
+              Fn::Join: 
+                - ""
+                - 
+                  - "arn:aws:s3:::"
+                  - 
+                    Ref: NameOfBucket
+                  - "/*"
+            Principal: "*"

@@ -1,0 +1,24 @@
+Parameters:
+  DomainName:
+    Type: String
+    Description: domain name without TLD
+    MinLength: 0
+Resources:
+  CloudfrontOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties: 
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Join: ["", ["CallerIdentity-", !Ref DomainName]]
+Outputs:
+  OriginAccessIdentityCallerIdentity:
+    Description: Caller ID for OAI
+    Export:
+      Name: !Join ["", ["CallerIdentity-", !Ref DomainName]]
+    Value:
+      Ref: CloudfrontOAI
+  OriginAccessIdentityCallerIdentityCanonicalID:
+    Description: Caller ID for OAI
+    Export:
+      Name: !Join ["", ["CanonicalIdentity-", !Ref DomainName]]
+    Value:
+      Ref: CloudfrontOAI.S3CanonicalUserId
